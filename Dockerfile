@@ -1,5 +1,5 @@
 # AlpineLinux with a glibc-2.27-r0 And Oracle Java 8
-FROM registry.cn-shenzhen.aliyuncs.com/casstime/alpine-glibc:latest
+FROM casstime/alpine-glibc:latest
 MAINTAINER Jim Xu <jian.xu@casstime.com>
 
 #制作镜像的脚本如下
