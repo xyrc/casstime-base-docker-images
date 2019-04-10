@@ -26,6 +26,9 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
     rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
     \
+    wget "https://github.com/xyrc/casstime-base-docker-images/blob/alpine-glibc-server-jre/jdk-tools.zip?raw=true" && \
+    unzip -jo -d "${JAVA_HOME}/jre/bin" "jdk-tools.zip" && \
+    \
     apk del build-dependencies && \
     rm -rf * && \
     \
