@@ -15,4 +15,9 @@ ENV MALLOC_ARENA_MAX=1 \
 RUN apk add --no-cache --virtual=build-dependencies unzip tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
-    apk del build-dependencies
+    apk del build-dependencies && \
+    apk update && \
+    apk upgrade && \
+    apk add --no-cache bash bash-doc bash-completion && \
+    rm -rf /var/cache/apk/* && \
+    /bin/bash
