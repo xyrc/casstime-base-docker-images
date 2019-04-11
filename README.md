@@ -1,7 +1,10 @@
 # 分支说明
 #### alpine-glibc-server-jre-tomcat
+* FROM casstime/alpine-glibc-server-jre-8:latest
+* attached Apache tomcat 8.0.21
+
 #### alpine-glibc-server-jre
-* casstime/alpine-glibc:latest
+* FROM casstime/alpine-glibc:latest
 * attached server-jre-8u202-b08
 * attached jce_policy-8.zip
   * local_policy.jar
