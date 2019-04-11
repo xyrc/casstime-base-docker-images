@@ -1,5 +1,5 @@
 # AlpineLinux with a glibc-2.27-r0 And Oracle Java 8 And Apache Tomcat 8
-FROM casstime/alpine-glibc-server-jar-8:latest
+FROM casstime/alpine-glibc-server-jre-8:latest
 MAINTAINER Jim Xu <jian.xu@casstime.com>
 
 ENV TOMCAT_VERSION=8 \
