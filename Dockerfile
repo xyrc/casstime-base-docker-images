@@ -8,7 +8,7 @@ ENV TOMCAT_VERSION=8 \
 
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
     cd "/tmp" && \
-    wget "http://archive.apache.org/dist/tomcat-${TOMCAT_VERSION}/v${TOMCAT_VERSION}.0.21/bin/apache-tomcat-${TOMCAT_VERSION}.0.21.tar.gz" && \
+    wget "http://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_VERSION}/v${TOMCAT_VERSION}.0.21/bin/apache-tomcat-${TOMCAT_VERSION}.0.21.tar.gz" && \
     tar -xzf "apache-tomcat-${TOMCAT_VERSION}.0.21.tar.gz" && \
     mkdir -p "${TOMCAT_HOME}" && \
     mv /tmp/apache-tomcat-${TOMCAT_VERSION}.0.21/* ${TOMCAT_HOME} && \
