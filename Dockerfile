@@ -10,9 +10,9 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     cd "/tmp" && \
     wget "http://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_VERSION}/v${TOMCAT_VERSION}.0.21/bin/apache-tomcat-${TOMCAT_VERSION}.0.21.tar.gz" && \
     tar -xzf "apache-tomcat-${TOMCAT_VERSION}.0.21.tar.gz" && \
+    rm -rf "/tmp/apache-tomcat-${TOMCAT_VERSION}.0.21/webapps/*" && \
     mkdir -p "${TOMCAT_HOME}" && \
     mv /tmp/apache-tomcat-${TOMCAT_VERSION}.0.21/* ${TOMCAT_HOME} && \
-    rm -rf "${TOMCAT_HOME}/webapps/*" && \
     \
     apk del build-dependencies && \
     rm -rf * && \
