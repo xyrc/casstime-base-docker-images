@@ -1,7 +1,7 @@
 # 分支说明
 #### alpine-glibc-server-jre-tomcat
 #### alpine-glibc-server-jre
-* FROM alpine-glibc
+* casstime/alpine-glibc:latest
 * attached server-jre-8u202-b08
 * attached jce_policy-8.zip
   * local_policy.jar
@@ -14,8 +14,9 @@
   * jstat
 
 #### alpine-glibc
-* FROM AlpineLinux 3.9 
-* attached glibc-2.27-r0
+* FROM frolvlad/alpine-glibc:alpine-3.9
+* AlpineLinux 3.9 
+* with a glibc-2.27-r0
 * attached bash
 
 #### javabase
