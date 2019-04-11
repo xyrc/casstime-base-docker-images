@@ -1,10 +1,22 @@
 # 分支说明
 #### alpine-glibc-server-jre-tomcat
 #### alpine-glibc-server-jre
+* FROM alpine-glibc
+* attached server-jre-8u202-b08
+* attached jce_policy-8.zip
+  * local_policy.jar
+  * US_export_policy.jar
+* attached jdk-tools.zip
+  * jhat
+  * jinfo
+  * jmap
+  * jstack
+  * jstat
+
 #### alpine-glibc
-* AlpineLinux 3.9 
-* with glibc-2.27-r0
-* with bash
+* FROM AlpineLinux 3.9 
+* attached glibc-2.27-r0
+* attached bash
 
 #### javabase
 
