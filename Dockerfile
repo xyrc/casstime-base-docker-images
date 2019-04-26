@@ -1,36 +1,46 @@
-# AlpineLinux with a glibc-2.27-r0 And Oracle Java 8
-FROM casstime/alpine-glibc:latest
-MAINTAINER Jim Xu <jian.xu@casstime.com>
+FROM node:10.15.3-stretch-slim
 
-#制作镜像的脚本如下
-#docker build --pull --rm -t casstime/alpine-glibc-server-jre-8:latest .
-#docker push casstime/alpine-glibc-server-jre-8:latest
+# 替换镜像，修改时区
+ENV TZ=Asia/Shanghai
+RUN set -eux; \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime; \
+    echo $TZ > /etc/timezone;
 
-ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=202 \
-    JAVA_BUILD=08 \
-    JAVA_PATH=1961070e4c9b4e26a04e7f5a083f551e \
-    JAVA_HOME="/usr/lib/java" \
-    PATH="${PATH}:/usr/lib/java/bin"
+# 换源
+RUN echo "deb http://mirrors.aliyun.com/debian stretch main contrib non-free\
+deb-src http://mirrors.aliyun.com/debian stretch main contrib non-free\
+deb http://mirrors.aliyun.com/debian stretch-updates main contrib non-free\
+deb-src http://mirrors.aliyun.com/debian stretch-updates main contrib non-free\
+deb http://mirrors.aliyun.com/debian stretch-backports main non-free contrib\
+deb-src http://mirrors.aliyun.com/debian stretch-backports main non-free contrib\
+deb http://mirrors.aliyun.com/debian-security stretch/updates main contrib non-free\
+deb-src http://mirrors.aliyun.com/debian-security stretch/updates main contrib non-free\
+" > /etc/apt/sources.list
 
-RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
-    cd "/tmp" && \
-    wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/server-jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
-    tar -xzf "server-jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
-    mkdir -p "${JAVA_HOME}" && \
-    mv /tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}/* ${JAVA_HOME} && \
-    \
-    mkdir -p "${JAVA_HOME}/jre/lib/security" && \
-    wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION}/jce_policy-${JAVA_VERSION}.zip" && \
-    unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
-    rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
-    \
-    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/alpine-glibc-server-jre/jdk-tools.zip" && \
-    unzip -jo -d "${JAVA_HOME}/jre/bin" "jdk-tools.zip" && \
-    \
-    apk del build-dependencies && \
-    rm -rf * && \
-    \
-    java -version && \
-    echo "成功了"
+# 通用依赖 构建工具，python ifconfig ping ip
+RUN  apt-get update -y && apt-get install -y apt-utils build-essential python net-tools iputils-ping iproute2
+
+# npm 加速
+RUN npm config set registry https://registry.npm.taobao.org/ && \
+npm install yarn -g && \
+npm config set @casstime:registry http://dev.casstime.com/nexus/repository/npm/ && \
+npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass && \
+npm config set electron_mirror https://npm.taobao.org/mirrors/electron/ && \
+npm config set puppeteer_download_host https://npm.taobao.org/mirrors && \
+npm config set chromedriver_cdnurl https://npm.taobao.org/mirrors/chromedriver  && \
+npm config set operadriver_cdnurl https://npm.taobao.org/mirrors/operadriver  && \
+npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs && \
+npm config set selenium_cdnurl https://npm.taobao.org/mirrors/selenium && \
+npm config set node_inspector_cdnurl https://npm.taobao.org/mirrors/node-inspector && \
+yarn config set registry https://registry.npm.taobao.org/ && \
+yarn config set @casstime:registry http://dev.casstime.com/nexus/repository/npm/ && \
+yarn config set sass_binary_site https://npm.taobao.org/mirrors/node-sass && \
+yarn config set electron_mirror https://npm.taobao.org/mirrors/electron/ && \
+yarn config set puppeteer_download_host https://npm.taobao.org/mirrors && \
+yarn config set chromedriver_cdnurl https://npm.taobao.org/mirrors/chromedriver && \
+yarn config set operadriver_cdnurl https://npm.taobao.org/mirrors/operadriver && \
+yarn config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs && \
+yarn config set selenium_cdnurl https://npm.taobao.org/mirrors/selenium && \
+yarn config set node_inspector_cdnurl https://npm.taobao.org/mirrors/node-inspector
+
+CMD ["node"]
