@@ -1,37 +1,37 @@
-# AlpineLinux with a glibc-2.27-r0 And Oracle Java 8
-FROM casstime/alpine-glibc:latest
+# Jenkins Slave, Docker, Maven, Git
+FROM casstime/alpine-glibc-server-jre:latest
 MAINTAINER Jim Xu <jian.xu@casstime.com>
 
-#制作镜像的脚本如下
-#docker build --pull --rm -t casstime/alpine-glibc-server-jre-8:latest .
-#docker push casstime/alpine-glibc-server-jre-8:latest
+ENV JENKINS_HOME=/home/jenkins \
+    JENKINS_REMOTNG_VERSION=2.53.1 \
+    DOCKER_HOST=tcp://0.0.0.0:2375 \
+    DOCKER_COMPOSE_VERSION=1.8.0
 
-ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=202 \
-    JAVA_BUILD=08 \
-    JAVA_PATH=1961070e4c9b4e26a04e7f5a083f551e \
-    JAVA_HOME="/usr/lib/java" \
-    PATH="${PATH}:/usr/lib/java/bin"
+RUN apk add --no-cache --virtual=build-dependencies wget curl git && \
+    curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose && \
+    adduser -D -h $JENKINS_HOME -s /bin/sh jenkins jenkins && \
+    chmod a+rwx $JENKINS_HOME && \
+    echo "jenkins ALL=(ALL) NOPASSWD: /usr/local/bin/docker" > /etc/sudoers.d/00jenkins && \
+    chmod 440 /etc/sudoers.d/00jenkins && \
+    \
+    curl --create-dirs -sSLo /usr/share/jenkins/slave.jar http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/$JENKINS_REMOTNG_VERSION/remoting-$JENKINS_REMOTNG_VERSION.jar && \
+    chmod 755 /usr/share/jenkins && \
+    chmod 644 /usr/share/jenkins/slave.jar && \
+    \
+    wget http://mirrors.sonic.net/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz && \
+    tar -zxf apache-maven-3.5.3-bin.tar.gz && \
+    mv apache-maven-3.5.3 /usr/local && \
+    rm -f apache-maven-3.5.3-bin.tar.gz && \
+    ln -s /usr/local/apache-maven-3.5.3/bin/mvn /usr/bin/mvn && \
+    ln -s /usr/local/apache-maven-3.5.3 /usr/local/apache-maven && \
+    \
+    apk del build-dependencies
 
-RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
-    cd "/tmp" && \
-    wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/server-jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
-    tar -xzf "server-jre-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
-    mkdir -p "${JAVA_HOME}" && \
-    mv /tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}/* ${JAVA_HOME} && \
-    \
-    mkdir -p "${JAVA_HOME}/jre/lib/security" && \
-    wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION}/jce_policy-${JAVA_VERSION}.zip" && \
-    unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
-    rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
-    \
-    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/alpine-glibc-server-jre/jdk-tools.zip" && \
-    unzip -jo -d "${JAVA_HOME}/bin" "jdk-tools.zip" && \
-    chmod -R 755 "${JAVA_HOME}/bin" && \
-    \
-    apk del build-dependencies && \
-    rm -rf * && \
-    \
-    java -version && \
-    echo "成功了"
+COPY jenkins-slave /usr/local/bin/jenkins-slave
+
+VOLUME $JENKINS_HOME
+WORKDIR $JENKINS_HOME
+
+USER jenkins
+ENTRYPOINT ["jenkins-slave"]
