@@ -1,5 +1,5 @@
 # Jenkins Slave, Docker, Maven, Git
-FROM casstime/alpine-glibc-server-jre:latest
+FROM casstime/alpine-glibc-server-jre-8:latest
 MAINTAINER Jim Xu <jian.xu@casstime.com>
 
 ENV JENKINS_HOME=/home/jenkins \
