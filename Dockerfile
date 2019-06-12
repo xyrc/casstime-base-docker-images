@@ -34,4 +34,4 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     rm -rf * && \
     \
     java -version && \
-    echo "成功了"
+    echo "成功了~"
