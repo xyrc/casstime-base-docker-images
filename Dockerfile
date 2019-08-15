@@ -4,7 +4,7 @@ MAINTAINER Jim Xu <jian.xu@casstime.com>
 
 RUN apk add --no-cache --virtual=build-dependencies wget unzip && \
     cd "/tmp" && \
-    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/apache-skywalking-agent'/apache-skywalking-agent-6.2.0.zip" && \
+    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/skywalking-agent-6.2.0/apache-skywalking-agent-6.2.0.zip" && \
     unzip -jo -d "/skywalking/agent" "apache-skywalking-agent-6.2.0.zip" && \
     chmod -R 666 "/skywalking/agent" && \
     \
