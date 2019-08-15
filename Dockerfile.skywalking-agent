@@ -1,0 +1,15 @@
+# AlpineLinux with a glibc-2.27-r0 And Oracle Java 8
+FROM casstime/alpine-glibc-server-jre-8:base
+MAINTAINER Jim Xu <jian.xu@casstime.com>
+
+
+RUN apk add --no-cache --virtual=build-dependencies wget unzip && \
+    cd "/tmp" && \
+    mkdir -p "/skywalking/agent" && \
+    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/master/apache-skywalking-agent-6.2.0.zip" && \
+    unzip -jo -d "/skywalking/agent" "apache-skywalking-agent-6.2.0.zip" && \
+    chmod -R 666 "/skywalking/agent" && \
+    apk del build-dependencies && \
+    rm -rf * && \
+    \
+    echo "成功了~"
