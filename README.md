@@ -9,12 +9,13 @@
 * attached jce_policy-8.zip
   * local_policy.jar
   * US_export_policy.jar
-* attached jdk-tools.zip
+* attached jdk-tools
   * jhat
   * jinfo
   * jmap
   * jstack
   * jstat
+* attached apache-skywalking-agent-6.2.0
 
 #### alpine-glibc
 * FROM frolvlad/alpine-glibc:alpine-3.9
