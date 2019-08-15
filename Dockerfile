@@ -26,9 +26,14 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
     rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
     \
-    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/alpine-glibc-server-jre/jdk-tools.zip" && \
+    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/master/jdk-tools.zip" && \
     unzip -jo -d "${JAVA_HOME}/bin" "jdk-tools.zip" && \
     chmod -R 755 "${JAVA_HOME}/bin" && \
+    \
+    mkdir -p "/skywalking/agent" && \
+    wget "https://raw.githubusercontent.com/xyrc/casstime-base-docker-images/master/apache-skywalking-agent-6.2.0.zip" && \
+    unzip -jo -d "/skywalking/agent" "apache-skywalking-agent-6.2.0.zip" && \
+    chmod -R 666 "/skywalking/agent" && \
     \
     apk del build-dependencies && \
     rm -rf * && \
