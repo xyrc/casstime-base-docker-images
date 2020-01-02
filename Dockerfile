@@ -15,9 +15,10 @@ ENV MALLOC_ARENA_MAX=1 \
 RUN apk add --no-cache --virtual=build-dependencies unzip tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
-    echo 3 > /proc/sys/net/ipv4/tcp_keepalive_probes && \
-    echo 20 > /proc/sys/net/ipv4/tcp_keepalive_intvl && \
-    echo 1200 > /proc/sys/net/ipv4/tcp_keepalive_time && \
+    \
+    mkdir -p "/usr/lib/sysctl.d" && \
+    echo "net.ipv4.tcp_keepalive_probes=3\nnet.ipv4.tcp_keepalive_intvl=20\nnet.ipv4.tcp_keepalive_time=1200\nnet.netfilter.nf_conntrack_tcp_timeout_time_wait=30" > /usr/lib/sysctl.d/10-casstime.conf && \
+    \
     apk del build-dependencies && \
     apk update && \
     apk upgrade && \
