@@ -2,4 +2,4 @@
 
 echo "Build hook running"
 
-docker build -t --privileged $IMAGE_NAME .
+docker build --privileged -t $IMAGE_NAME .
