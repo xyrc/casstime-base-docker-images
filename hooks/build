@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Build hook running"
+
+docker build -t --privileged $IMAGE_NAME .
