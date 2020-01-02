@@ -16,8 +16,7 @@ RUN apk add --no-cache --virtual=build-dependencies unzip tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
     \
-    mkdir -p "/usr/lib/sysctl.d" && \
-    echo -e "net.ipv4.tcp_keepalive_probes=3\nnet.ipv4.tcp_keepalive_intvl=20\nnet.ipv4.tcp_keepalive_time=1200\nnet.netfilter.nf_conntrack_tcp_timeout_time_wait=30" > /usr/lib/sysctl.d/10-optimized.conf && \
+    echo -e "net.ipv4.tcp_keepalive_probes=3\nnet.ipv4.tcp_keepalive_intvl=20\nnet.ipv4.tcp_keepalive_time=1200\nnet.netfilter.nf_conntrack_tcp_timeout_time_wait=30" > /etc/sysctl.d/10-optimized.conf && \
     \
     apk del build-dependencies && \
     apk update && \
