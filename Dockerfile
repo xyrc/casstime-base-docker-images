@@ -12,13 +12,12 @@ ENV MALLOC_ARENA_MAX=1 \
     TZ=Asia/Shanghai \
     LANG=C.UTF-8
 
-RUN apk add --no-cache --virtual=build-dependencies unzip tzdata && \
+RUN apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
     \
     echo -e "net.ipv4.tcp_keepalive_probes=3\nnet.ipv4.tcp_keepalive_intvl=20\nnet.ipv4.tcp_keepalive_time=1200\nnet.netfilter.nf_conntrack_tcp_timeout_time_wait=30" > /etc/sysctl.d/10-optimized.conf && \
     \
-    apk del build-dependencies && \
     apk update && \
     apk upgrade && \
     apk add --no-cache bash bash-doc bash-completion && \
