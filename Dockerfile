@@ -9,7 +9,7 @@ MAINTAINER Jim Xu <jian.xu@casstime.com>
 #docker push casstime/alpine-glibc:latest
 
 ENV MALLOC_ARENA_MAX=1 \
-    TZ=GMT+08 \
+    TZ=Asia/Shanghai \
     LANG=C.UTF-8
 
 RUN apk add --no-cache --virtual=build-dependencies unzip tzdata && \
