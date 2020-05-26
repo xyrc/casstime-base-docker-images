@@ -9,7 +9,7 @@ MAINTAINER Jim Xu <jian.xu@casstime.com>
 ENV JAVA_VERSION=8 \
     JAVA_UPDATE=202 \
     JAVA_BUILD=08 \
-    JAVA_PATH=1961070e4c9b4e26a04e7f5a083f551e \
+    JAVA_PATH=42970487e3af4f5aa5bca3f542482c60 \
     JAVA_HOME="/usr/lib/java" \
     PATH="${PATH}:/usr/lib/java/bin"
 
